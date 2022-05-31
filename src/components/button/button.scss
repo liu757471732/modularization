@@ -1,0 +1,85 @@
+$primary:#409eff !default;
+$success:#00d100 !default;
+$wraning:#e6a23c !default;
+$danger:#f56c6c !default;
+
+.a-button {
+  padding: 0 20px;
+  border-width: 1px;
+  border-style: solid;
+  border-color: #dcdfe6;
+  border-radius: 4px;
+  background: #fff;
+  font-size: 14px;
+  color: #606266;
+  height: 40px;
+}
+.a-button-block {
+  display: block;
+  width: 100%;
+}
+.a-button-medium {
+  height: 36px;
+}
+.a-button-small {
+  padding: 0 15px;
+  height: 32px;
+  font-size: 12px;
+}
+.a-button-mini {
+  padding: 0 15px;
+  height: 28px;
+  font-size: 12px;
+}
+.a-button[disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.a-button-primary {
+  background-color: $primary;
+  border-color: $primary;
+  color: #fff;
+  &.is-border {
+    background-color: transparent;
+    color: $primary;
+  }
+  &.is-round {
+    border-radius: 100px;
+  }
+}
+.a-button-success {
+  background-color: $success;
+  border-color: $success;
+  color: #fff;
+  &.is-border {
+    background-color: transparent;
+    color: $success;
+  }
+  &.is-round {
+    border-radius: 100px;
+  }
+}
+.a-button-wraning {
+  background-color: $wraning;
+  border-color: $wraning;
+  color: #fff;
+  &.is-border {
+    background-color: transparent;
+    color: $wraning;
+  }
+  &.is-round {
+    border-radius: 100px;
+  }
+}
+.a-button-danger {
+  background-color: $danger;
+  border-color: $danger;
+  color: #fff;
+  &.is-border {
+    background-color: transparent;
+    color: $danger;
+  }
+  &.is-round {
+    border-radius: 100px;
+  }
+}
