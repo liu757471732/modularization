@@ -1,6 +1,6 @@
 <template>
   <div>
-    <a-form :config="form_config" :form="form_field" :op_button="op_button" :beforeSubmit="beforeSubmit">
+    <a-form :config="form_config" :form="form_field" :op_button="op_button" :beforeSubmit="beforeSubmit" :gutterWidth="gutterWidth" :labelWidth="labelWidth" :formShow="form_show">
       <template v-slot:schoolSlot>
         <el-input v-model="form_field.school" placeholder="请输入内容"></el-input>
       </template>
@@ -13,6 +13,11 @@ import { validatePhone } from '@/utils/validate'
 export default {
   data() {
     return {
+      // form其他配置
+      labelWidth: '80px',   //form表单的文字宽度
+      gutterWidth: "40", //form表单中的row的间隔
+
+      // form数据的配置
       form_config: [
         {
           label: '姓名',
@@ -21,6 +26,7 @@ export default {
           placeholder: "请选择姓名",
           required: true,  //是否有验证规则
           message: '我是你爸爸',   //自定义提示消息 
+          formCol: 10,   //row设置占的比例
         },
         {
           label: '手机号码',
@@ -28,7 +34,8 @@ export default {
           type: 'input',
           placeholder: "请选择手机号",
           required: true,
-          rules: [{ validator: validatePhone, trigger: 'blur' }]
+          rules: [{ validator: validatePhone, trigger: 'blur' }],
+          formCol: 10,
         },
         {
           label: '性别',
@@ -53,6 +60,7 @@ export default {
           // }
           // a_label: 'sex',   //有a_label使用这个 没有使用label
           // a_value: 'id'
+          formCol: 24,
         },
         {
           label: '学校',
@@ -60,7 +68,8 @@ export default {
           required: true,
           message: '我是你爸爸',   //自定义提示消息
           isSlot: true,  //是否使用插槽
-          slotName: 'schoolSlot'
+          slotName: 'schoolSlot',
+          formCol: 20,
         },
         {
           label: '水果',
@@ -73,6 +82,7 @@ export default {
             { label: '香蕉' },
             { label: '西瓜', disabled: true },
           ],
+          formCol: 24,
           // a_label: 'sex', 
         },
         {
@@ -86,6 +96,7 @@ export default {
             { label: '飞机', disabled: true },
           ],
           a_label: 'a',   //有a_label使用这个 没有使用label
+          formCol: 24,
         },
         {
           label: '时间',
@@ -103,6 +114,7 @@ export default {
           // rangeSeparator: "至",  //开始时间到结束时间 时间段的时候选用
           // startPlaceholder: "开始日期",  //开始时间到结束时间 时间段的时候选用
           // endPlaceholder: "结束日期",   //开始时间到结束时间 时间段的时候选用
+          formCol: 24,
         },
         {
           label: '文件',
@@ -112,8 +124,24 @@ export default {
           required: true,
           tipType: true,  //是否需要提示
           tipMessage: '只能上传jpg/png文件，且不超过2M', //上传文件的提示信息
+          url: '/api/upload/img',  //自定义上传地址
           uploadWidth: '100px',
-          uploadHheight: '100px'
+          uploadHheight: '100px',  //宽高
+          accept: '.jpg,.zip',  //限制上传类型
+          multiple: true, //是否允许多文件上传
+          limit: 5, //  最多上传多少张
+          fileSize: 2, //设置上传文件为多少M
+          formCol: 24,
+        },
+        {
+          label: '切换',
+          prop: 'cut',
+          type: 'switch',
+          activeColor: '#13ce66',  //激活的颜色
+          inactiveColor: '#ff4949', //关闭的颜色
+          // activeText: "按月付费", //激活的文字
+          // inactiveText: "按年付费", //关闭的文字
+          formCol: 24,
         }
       ],
       form_field: {
@@ -123,13 +151,37 @@ export default {
         school: '',
         fruits: [],
         trip: '汽车',
-        time: ''
+        time: '',
+        uploadImg: '',
+        cut: true,
+      },
+      form_show: {
+        name: true,
+        phone: true,
+        sex: true,
+        school: true,
+        fruits: true,
+        trip: true,
+        time: true,
+        uploadImg: true,
+        cut: true,
       },
       op_button: [
         { type: 'success', label: '提交', key: 'submit', loading: false },
         { type: '', label: '取消', key: 'cancel' },
         { type: 'primary', label: '下一步', key: 'next', callBack: () => { } }
       ]
+    }
+  },
+  watch: {
+    'form_field.cut': {
+      handler(val) {
+        if (val == true) {
+          this.form_show.name = true
+        } else {
+          this.form_show.name = false
+        }
+      }
     }
   },
   components: {

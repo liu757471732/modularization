@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-upload class="upload-demo" action="https://jsonplaceholder.typicode.com/posts/" :show-file-list="false">
+    <el-upload class="upload-demo" action="/" :show-file-list="false" :http-request="handlerUpload" :accept="item.accept" :multiple="item.multiple || false" :limit="item.limit || 1" :on-exceed="handlerExceed" :before-upload="beforeUpload">
       <template v-if="item.uploadType=='button'">
         <el-button size="small" type="primary">点击上传</el-button>
       </template>
@@ -27,6 +27,7 @@ export default {
   data() {
     return {
       val: '',
+      imageUrl: ''
     }
   },
   computed: {
@@ -47,6 +48,23 @@ export default {
   methods: {
     handlerChange(val) {
       this.$emit('update:value', val)
+    },
+    handlerUpload(file) {
+      console.log(file)
+      this.$emit('update:value', '手动上传文件的地址')
+    },
+    handlerExceed() {
+      this.$message({
+        message: '超出上传限制',
+        type: 'warning'
+      });
+    },
+    beforeUpload(file) {
+      const isLt2M = file.size / 1024 / 1024 < this.item.fileSize;
+      if (!isLt2M) {
+        this.$message.warning('上传文件大小不能超过 2MB!');
+      }
+      return isLt2M
     }
   }
 }

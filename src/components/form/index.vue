@@ -1,19 +1,20 @@
 <template>
   <div>
-    <el-form ref="form" :model="form_field" label-width="80px">
-      <template v-for="(item,index) in form_config">
-        <el-form-item :label="item.label" :key="index" :prop="item.prop" :rules="item.rules">
-          <slot v-if="item.isSlot" :name="item.slotName"></slot>
-          <component :is="`com-${item.type}`" :value.sync="form_field[item.prop]" :item="item" v-else></component>
-          <!-- <el-input v-model="form_field[item.prop]"></el-input> -->
-        </el-form-item>
-        <!-- <el-form-item :label="item.label" :key="index" v-else-if="item.type=='select'" :prop="item.prop" :rules="item.rules">
+    <el-form ref="form" :model="form_field" :label-width="labelWidth || '80px'">
+      <el-row :gutter="gutter">
+        <el-col :span="item.formCol || 24" v-for="item in form_config" :key="item.prop">
+          <el-form-item :label="item.label" :prop="item.prop" :rules="item.rules" v-if="formShow[item.prop]">
+            <slot v-if="item.isSlot" :name="item.slotName"></slot>
+            <component :is="`com-${item.type}`" :value.sync="form_field[item.prop]" :item="item" v-else></component>
+            <!-- <el-input v-model="form_field[item.prop]"></el-input> -->
+          </el-form-item>
+          <!-- <el-form-item :label="item.label" :key="index" v-else-if="item.type=='select'" :prop="item.prop" :rules="item.rules">
           <el-select v-model="form_field[item.prop]" placeholder="请选择活动区域">
             <el-option :label="el.a_label || el.label" :value="el.a_value || el.value" v-for="(el,i) in item.option" :key="i"></el-option>
           </el-select>
         </el-form-item> -->
-
-      </template>
+        </el-col>
+      </el-row>
       <el-form-item>
         <el-button :loading="item.loading" :type="item.type" @click="handlerBtn(item)" v-for="(item,index) in op_button" :key="index">{{item.label}}</el-button>
       </el-form-item>
@@ -48,12 +49,23 @@ export default {
       type: Array,
       default: () => []
     },
-    beforeSubmit: Function
+    formShow: {
+      type: Object,
+      default: () => { }
+    },
+    beforeSubmit: Function,
+    labelWidth: String,
+    gutterWidth: String,
   },
   data() {
     return {
       form_config: [],  //官方不推荐props传递过来的值直接在模板上使用于是用watch赋值一份  基础配置
       form_field: {},   //官方不推荐props传递过来的值直接在模板上使用于是用watch赋值一份  数据
+    }
+  },
+  computed: {
+    gutter() {
+      return parseInt(this.gutterWidth)
     }
   },
   watch: {
