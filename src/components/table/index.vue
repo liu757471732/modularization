@@ -101,7 +101,7 @@ export default {
   },
   methods: {
     // 扩展可以自定义方法合并
-    spanMethod ({ row, column, rowIndex, columnIndex }) {
+    spanMethod ({ rowIndex, columnIndex }) {
       if (this.merge) {
         let keys = Object.keys(this.json)
         if (this.columnList.includes(columnIndex)) {

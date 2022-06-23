@@ -25,7 +25,7 @@ export default {
       // 参数模仿element ui 固定table的高一样
       // checkShow  勾选框
       // serial  是否有序号
-      columnList: [2],  //table中需要那一列合并
+      // columnList: [1],  //table中需要那一列合并
       // merge   是否使用合并
       tableHeader: [
         {
