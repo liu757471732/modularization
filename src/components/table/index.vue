@@ -1,13 +1,14 @@
 /* eslint-disable vue/require-component-is */
 <template>
   <div>
-    <el-table :data="tableData" style="width: 100%" border stripe :height="height" :max-height="maxHeight" @selection-change="handleSelectionChange" :row-class-name="rowClassName">
-      <el-table-column label="序号" align="center" prop="xh" width="50" v-if="serial"></el-table-column>
+    <el-table :data="tableData" style="width: 100%" border stripe :height="height" :max-height="maxHeight"
+      @selection-change="handleSelectionChange" :row-class-name="rowClassName" :span-method="spanMethod">
       <el-table-column type="selection" width="50" v-if="checkShow">
       </el-table-column>
-      <template v-for="(item,index) in tableHeader">
-        <!-- <el-table-column :prop="item.prop" :label="item.label" :width="item.width" :key="index" :fixed="item.fixed" :show-overflow-tooltip="true" :sortable="item.sortable" v-if="item.type=='function'">
-          <template slot-scope="scope">
+      <el-table-column label="序号" align="center" prop="xh" width="50" v-if="serial"></el-table-column>
+      <template v-for="(item, index) in tableHeader">
+        <!-- <el-table-column :prop="item.prop" :label="item.label" :width="item.width" :key="index" :fixed="item.fixed" :show-overflow-tooltip="true" :sortable="item.sortable" v-if="item.type=='function'"> 
+          <template slot-scope="scope"> 
             <div v-html="item.callBack && item.callBack(scope.row)"></div>
           </template>
         </el-table-column> -->
@@ -29,10 +30,12 @@
             <el-image v-for="(o,l) in scope.row[item.prop]" :key="l" :src="o" :style="[{width:item.imgWidth,height:item.imgHeight},{margin:'0 5px'}]" :preview-src-list="[o]"></el-image>
           </template>
         </el-table-column> -->
-        <el-table-column :prop="item.prop" :label="item.label" :width="item.width" :key="index" :fixed="item.fixed" :show-overflow-tooltip="true" :sortable="item.sortable">
+        <el-table-column :prop="item.prop" :label="item.label" :width="item.width" :key="index" :fixed="item.fixed"
+          :show-overflow-tooltip="true" :sortable="item.sortable">
           <template slot-scope="scope">
-            <slot :name="item.slotName" :data="scope.row" v-if="item.type=='slot'"></slot>
-            <component :is="item.type?`com-${item.type}`:'com-text'" :data="scope.row" :config="item" :prop="item.prop" v-else></component>
+            <slot :name="item.slotName" :data="scope.row" v-if="item.type == 'slot'"></slot>
+            <component :is="item.type ? `com-${item.type}` : 'com-text'" :data="scope.row" :config="item"
+              :prop="item.prop" v-else></component>
           </template>
         </el-table-column>
       </template>
@@ -59,23 +62,67 @@ export default {
       type: Array,
       default: () => { [] }
     },
+    columnList: {
+      type: Array,
+      default: () => { [] }
+    },
     border: Boolean,
     stripe: Boolean,
     height: String,
     maxHeight: String,
     checkShow: Boolean,
     serial: Boolean,
+    merge: Boolean,
   },
-  data() {
+  data () {
     return {
-
+      json: {}  //判断合并的规则
+    }
+  },
+  watch: {
+    tableData: {
+      handler (val) {
+        let json = {}
+        let num = 0
+        if (Array.isArray(val) && val.length > 0) {
+          val.forEach((item, index) => {
+            if (index && item.id == val[index - 1].id) {
+              json[num] += 1
+            } else {
+              num = index
+              json[num] = 1
+            }
+          })
+        }
+        this.json = json
+      },
+      immediate: true
     }
   },
   methods: {
-    handleSelectionChange(val) {
+    // 扩展可以自定义方法合并
+    spanMethod ({ row, column, rowIndex, columnIndex }) {
+      if (this.merge) {
+        let keys = Object.keys(this.json)
+        if (this.columnList.includes(columnIndex)) {
+          if (keys.includes(rowIndex.toString())) {
+            return {
+              rowspan: this.json[rowIndex],
+              colspan: 1
+            };
+          } else {
+            return {
+              rowspan: 0,
+              colspan: 0
+            };
+          }
+        }
+      }
+    },
+    handleSelectionChange (val) {
       this.$emit('handlerCheck', val)
     },
-    rowClassName({ row, rowIndex }) {
+    rowClassName ({ row, rowIndex }) {
       row.xh = rowIndex + 1;
     }
   },

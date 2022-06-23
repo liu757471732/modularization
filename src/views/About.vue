@@ -1,6 +1,7 @@
 <template>
   <div>
-    <a-table :tableHeader="tableHeader" :tableData="tableData" border stripe serial @handlerCheck="handlerCheck">
+    <a-table :tableHeader="tableHeader" :tableData="tableData" border stripe serial @handlerCheck="handlerCheck" merge
+      :columnList="columnList">
       <!-- 操作插槽 -->
       <template v-slot:operate>
         <el-button size="mini">编辑</el-button>
@@ -14,7 +15,7 @@
 import { operationMixins } from '@/minxis/operation.js'
 export default {
   mixins: [operationMixins],
-  data() {
+  data () {
     return {
       url: '123',
       // border是否带边框
@@ -24,7 +25,16 @@ export default {
       // 参数模仿element ui 固定table的高一样
       // checkShow  勾选框
       // serial  是否有序号
+      columnList: [2],  //table中需要那一列合并
+      // merge   是否使用合并
       tableHeader: [
+        {
+          label: 'id',
+          prop: 'id',
+          // fixed: 'left',  //设置定位列 值为left 和right
+          width: '180px',   //设置每一列的宽度
+          // sortable: true, //排序  默认支持element官方的两种排序
+        },
         {
           label: '日期',
           prop: 'date',
@@ -94,6 +104,7 @@ export default {
         }
       ],
       tableData: [{
+        id: '12987122',
         date: '2016-05-02',
         name: '王小虎',
         url: ['https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg', 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg', 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg', 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg'],
@@ -103,7 +114,8 @@ export default {
         zip: 200333,
         status: 0,
       }, {
-        date: '2016-05-04',
+        id: '12987122',
+        date: '2016-05-02',
         name: '王小虎',
         url: ['https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg', 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg', 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg', 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg'],
         province: '上海',
@@ -112,7 +124,8 @@ export default {
         zip: 200333,
         status: 0,
       }, {
-        date: '2016-05-01',
+        id: '12987123',
+        date: '2016-05-02',
         name: '王小虎',
         url: ['https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg', 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg', 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg', 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg'],
         province: '上海',
@@ -121,6 +134,7 @@ export default {
         zip: 200333,
         status: 1,
       }, {
+        id: '12987123',
         date: '2016-05-03',
         name: '王小虎',
         url: ['https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg', 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg', 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg', 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg'],
@@ -130,6 +144,7 @@ export default {
         zip: 200333,
         status: 1,
       }, {
+        id: '12987123',
         date: '2016-05-03',
         name: '王小虎',
         url: ['https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg', 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg', 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg', 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg'],
@@ -139,6 +154,7 @@ export default {
         zip: 200333,
         status: 1,
       }, {
+        id: '12987123',
         date: '2016-05-03',
         name: '王小虎',
         url: ['https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg', 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg', 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg', 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg'],
@@ -148,6 +164,7 @@ export default {
         zip: 200333,
         status: 2,
       }, {
+        id: '12987124',
         date: '2016-05-03',
         name: '王小虎',
         url: ['https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg', 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg', 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg', 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg'],
@@ -157,7 +174,8 @@ export default {
         zip: 200333,
         status: 2,
       }, {
-        date: '2016-05-03',
+        id: '12987124',
+        date: '2016-05-04',
         name: '王小虎',
         url: ['https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg', 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg', 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg', 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg'],
         province: '上海',
@@ -166,7 +184,8 @@ export default {
         zip: 200333,
         status: 2,
       }, {
-        date: '2016-05-03',
+        id: '12987125',
+        date: '2016-05-05',
         name: '王小虎',
         url: ['https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg', 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg', 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg', 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg'],
         province: '上海',
@@ -181,7 +200,7 @@ export default {
     'a-table': () => import('@/components/table')
   },
   methods: {
-    handlerCheck(val) {
+    handlerCheck (val) {
       console.log(val)
     }
   }
